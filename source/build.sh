@@ -1,5 +1,5 @@
 #!/bin/bash
-# Builds Tally on your own Mac. Needs the free Apple Command Line Tools, no Xcode.
+# Builds Tally on your own Mac. Needs Xcode (the Command Line Tools alone are not enough).
 set -e
 cd "$(dirname "$0")"
 

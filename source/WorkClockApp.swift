@@ -1474,16 +1474,18 @@ final class Store: ObservableObject {
         var newSessions: [Session]? = nil
         var isDir: ObjCBool = false
         FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
-        if isDir.boolValue {
-            if let d = try? Data(contentsOf: url.appendingPathComponent("sessions.json")) {
-                newSessions = try? dec.decode([Session].self, from: d)
-            }
-            if let d = try? Data(contentsOf: url.appendingPathComponent("projects.json")) {
-                newProjects = try? dec.decode([ProjectDef].self, from: d)
-            }
-        } else if let d = try? Data(contentsOf: url), let b = try? dec.decode(BackupFile.self, from: d) {
+        // A folder, or one of the files inside an old data folder, both work.
+        let folder = isDir.boolValue ? url : url.deletingLastPathComponent()
+        if !isDir.boolValue, let d = try? Data(contentsOf: url), let b = try? dec.decode(BackupFile.self, from: d) {
             newProjects = b.projects
             newSessions = b.sessions
+        } else {
+            if let d = try? Data(contentsOf: folder.appendingPathComponent("sessions.json")) {
+                newSessions = try? dec.decode([Session].self, from: d)
+            }
+            if let d = try? Data(contentsOf: folder.appendingPathComponent("projects.json")) {
+                newProjects = try? dec.decode([ProjectDef].self, from: d)
+            }
         }
         guard let incoming = newSessions else {
             note = T("That does not look like Tally data.")
