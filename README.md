@@ -23,4 +23,4 @@ Tally appears in your menu bar and a short guide starts. It opens at every login
 - Your Mac going to sleep stops the clock for you.
 - Settings: Touch ID on or off, language (English, Portugues, Espanol).
 
-Made by Gil Nobre. Feedback or feature suggestions: pupal08.ribbons@icloud.com
+Made by Gil. Feedback or feature suggestions: pupal08.ribbons@icloud.com

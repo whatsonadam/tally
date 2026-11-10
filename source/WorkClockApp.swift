@@ -1,4 +1,4 @@
-// Tally, created by Gil Nobre.
+// Tally, created by Gil.
 import SwiftUI
 import Charts
 import Combine
@@ -43,8 +43,11 @@ func perceivedBrightness(_ hex: String) -> Double {
 // MARK: - Languages
 
 enum AppLang: String, CaseIterable, Identifiable {
-    case en, pt, es
+    case en, pt, es, nl, fr, de, it
     var id: String { rawValue }
+
+    /// The languages behind the "Others" choice.
+    static let others: [AppLang] = [.nl, .fr, .de, .it]
 
     /// Portuguese means European Portuguese.
     var label: String {
@@ -52,6 +55,10 @@ enum AppLang: String, CaseIterable, Identifiable {
         case .en: return "English"
         case .pt: return "Português"
         case .es: return "Español"
+        case .nl: return "Nederlands"
+        case .fr: return "Français"
+        case .de: return "Deutsch"
+        case .it: return "Italiano"
         }
     }
 
@@ -60,6 +67,10 @@ enum AppLang: String, CaseIterable, Identifiable {
         case .en: return Locale(identifier: "en")
         case .pt: return Locale(identifier: "pt_PT")
         case .es: return Locale(identifier: "es")
+        case .nl: return Locale(identifier: "nl")
+        case .fr: return Locale(identifier: "fr")
+        case .de: return Locale(identifier: "de")
+        case .it: return Locale(identifier: "it")
         }
     }
 
@@ -68,6 +79,10 @@ enum AppLang: String, CaseIterable, Identifiable {
         let first = (Locale.preferredLanguages.first ?? "en").lowercased()
         if first.hasPrefix("pt") { return .pt }
         if first.hasPrefix("es") { return .es }
+        if first.hasPrefix("nl") { return .nl }
+        if first.hasPrefix("fr") { return .fr }
+        if first.hasPrefix("de") { return .de }
+        if first.hasPrefix("it") { return .it }
         return .en
     }
 }
@@ -82,8 +97,14 @@ enum Loc {
 /// Translates an English interface text. Use %@ for values.
 func T(_ key: String, _ args: CVarArg...) -> String {
     var s = key
-    if Loc.current != .en, let row = translations[key] {
-        s = Loc.current == .pt ? row.pt : row.es
+    switch Loc.current {
+    case .en: break
+    case .pt: if let row = translations[key] { s = row.pt }
+    case .es: if let row = translations[key] { s = row.es }
+    case .nl: s = translationsNL[key] ?? key
+    case .fr: s = translationsFR[key] ?? key
+    case .de: s = translationsDE[key] ?? key
+    case .it: s = translationsIT[key] ?? key
     }
     return args.isEmpty ? s : String(format: s, arguments: args)
 }
@@ -184,7 +205,11 @@ private let translations: [String: (pt: String, es: String)] = [
          es: "Desactivado: no se pide la huella. Úsalo si tu Mac no tiene Touch ID."),
     "Language": (pt: "Idioma", es: "Idioma"),
     "Shortcuts": (pt: "Atalhos", es: "Atajos"),
-    "Made by Gil Nobre": (pt: "Feito por Gil Nobre", es: "Hecho por Gil Nobre"),
+    "Made by Gil": (pt: "Feito por Gil", es: "Hecho por Gil"),
+    "Others": (pt: "Outros", es: "Otros"),
+    "Thanks for installing Tally! I hope it helps you manage your work. It is designed to be a very, very simple app. For any feedback or extra features, contact me at:":
+        (pt: "Obrigado por instalares o Tally! Espero que te ajude a gerir o teu trabalho. Foi pensado para ser uma app muito, muito simples. Para qualquer feedback ou funcionalidades extra, contacta-me em:",
+         es: "¡Gracias por instalar Tally! Espero que te ayude a gestionar tu trabajo. Está pensada para ser una app muy, muy sencilla. Para cualquier comentario o función extra, escríbeme a:"),
     "Feedback or feature suggestions:": (pt: "Feedback ou sugestões:", es: "Comentarios o sugerencias:"),
     "Clock out, or choose what to start": (pt: "Parar, ou escolher o que começar", es: "Parar, o elegir qué empezar"),
     "Show quick instructions": (pt: "Ver instruções rápidas", es: "Ver instrucciones rápidas"),
@@ -285,6 +310,538 @@ private let translations: [String: (pt: String, es: String)] = [
     "Back": (pt: "Voltar", es: "Atrás"),
     "Next": (pt: "Seguinte", es: "Siguiente"),
     "Done": (pt: "Concluir", es: "Listo")
+]
+
+private let translationsNL: [String: String] = [
+    "Your log file could not be read. A copy was kept in the data folder.": "Je logbestand kon niet worden gelezen. Er is een kopie bewaard in de gegevensmap.",
+    "Your last session was closed at %@ because the app restarted. You can edit it in the Log.": "Je laatste sessie is om %@ afgesloten omdat de app opnieuw is gestart. Je kunt hem aanpassen in het Logboek.",
+    "Stopped %@ at %@ when your Mac went to sleep.": "%@ is om %@ gestopt toen je Mac in slaapstand ging.",
+    "Could not change the open at login setting: %@": "Kon de instelling voor openen bij inloggen niet wijzigen: %@",
+    "Open Tally": "Tally openen",
+    "Clock out of %@": "%@ stoppen",
+    "Clock in": "Start",
+    "Clock in to %@": "Starten met %@",
+    "Give the project a name.": "Geef het project een naam.",
+    "You already have a project called %@.": "Je hebt al een project met de naam %@.",
+    "That is the limit: 12 projects.": "Dat is de limiet: 12 projecten.",
+    "The key %@ is already used by %@.": "De toets %@ wordt al gebruikt door %@.",
+    "Control+W is reserved for choosing a project. Pick another key.": "Control+W is gereserveerd voor het kiezen van een project. Kies een andere toets.",
+    "That key cannot be used as a shortcut.": "Die toets kan niet als sneltoets worden gebruikt.",
+    "Project name": "Projectnaam",
+    "%@ today": "%@ vandaag",
+    "What are you starting?": "Waar begin je mee?",
+    "Press a key to start. Esc to cancel.": "Druk op een toets om te starten. Esc om te annuleren.",
+    "Track": "Tijd",
+    "Stats": "Cijfers",
+    "Log": "Logboek",
+    "Projects": "Projecten",
+    "Quit Tally": "Tally afsluiten",
+    "TRACKING %@": "BEZIG MET %@",
+    "since %@": "sinds %@",
+    "READY": "KLAAR",
+    "Add a project to start": "Voeg een project toe om te starten",
+    "Pick a project to start": "Kies een project om te starten",
+    "Add your first project": "Voeg je eerste project toe",
+    "Clock out": "Stop",
+    "Switch": "Wissel",
+    "choose": "kiezen",
+    "New project": "Nieuw project",
+    "Today": "Vandaag",
+    "This week": "Deze week",
+    "This month": "Deze maand",
+    "This year": "Dit jaar",
+    "All": "Alles",
+    "Last 7 days": "Laatste 7 dagen",
+    "Averages": "Gemiddelden",
+    "Per day": "Per dag",
+    "Per week": "Per week",
+    "Per month": "Per maand",
+    "Per day only counts days you worked. Weeks and months count from your first log.": "Per dag telt alleen dagen waarop je werkte. Weken en maanden tellen vanaf je eerste registratie.",
+    "Nothing logged yet.": "Nog niets geregistreerd.",
+    "Add time": "Tijd toevoegen",
+    "Edit time": "Tijd aanpassen",
+    "Export CSV": "CSV exporteren",
+    "%@ to %@": "%@ tot %@",
+    "now": "nu",
+    "Start": "Begin",
+    "End": "Einde",
+    "Still running. Clock out to set the end time.": "Loopt nog. Stop de klok om de eindtijd in te stellen.",
+    "Total: %@": "Totaal: %@",
+    "End must be after start.": "Het einde moet na het begin liggen.",
+    "Note (optional)": "Notitie (optioneel)",
+    "Delete": "Verwijderen",
+    "Cancel": "Annuleren",
+    "Save": "Bewaren",
+    "No projects yet. Add one to start tracking.": "Nog geen projecten. Voeg er een toe om te beginnen.",
+    "Archived": "Gearchiveerd",
+    "Restore": "Herstellen",
+    "Hours of archived projects stay in your Log and Stats.": "Uren van gearchiveerde projecten blijven in je Logboek en Cijfers.",
+    "Settings": "Instellingen",
+    "Use Touch ID": "Touch ID gebruiken",
+    "Off: no fingerprint is asked. Use this if your Mac has no Touch ID.": "Uit: er wordt geen vingerafdruk gevraagd. Gebruik dit als je Mac geen Touch ID heeft.",
+    "Language": "Taal",
+    "Shortcuts": "Sneltoetsen",
+    "Made by Gil": "Gemaakt door Gil",
+    "Feedback or feature suggestions:": "Feedback of ideeën voor functies:",
+    "Clock out, or choose what to start": "Stoppen, of kiezen wat je start",
+    "Show quick instructions": "Snelle uitleg tonen",
+    "Open at login": "Openen bij inloggen",
+    "To turn this on, put Tally in your Applications folder and open it from there.": "Zet Tally hiervoor in je map Programma's en open het vanaf daar.",
+    "macOS needs your OK in System Settings > General > Login Items.": "macOS heeft je toestemming nodig in Systeeminstellingen > Algemeen > Inloggen.",
+    "Edit project": "Project aanpassen",
+    "Name": "Naam",
+    "For example: Writing, Client work, Gym": "Bijvoorbeeld: Schrijven, Klantwerk, Sportschool",
+    "Colour": "Kleur",
+    "Or a custom colour": "Of een eigen kleur",
+    "Logo or photo (optional)": "Logo of foto (optioneel)",
+    "Choose image…": "Afbeelding kiezen…",
+    "Remove": "Verwijderen",
+    "It shows on the card. Wide logos and square photos both work.": "Het staat op de kaart. Brede logo's en vierkante foto's werken allebei.",
+    "Shortcut": "Sneltoets",
+    "Starts and stops this project from anywhere. Control + W is always \"choose\".": "Start en stopt dit project vanaf overal. Control + W is altijd “kiezen”.",
+    "Delete this project…": "Dit project verwijderen…",
+    "%@ is logged on this project. It stays in your Log and Stats, and the project moves to Archived, where you can restore it any time.": "%@ is geregistreerd op dit project. Het blijft in je Logboek en Cijfers, en het project gaat naar Gearchiveerd, waar je het altijd kunt herstellen.",
+    "Nothing is logged on this project, so it will be removed.": "Er is niets geregistreerd op dit project, dus het wordt verwijderd.",
+    "This project is running. Clock out first.": "Dit project loopt. Stop eerst de klok.",
+    "Type \"%@\" to confirm": "Typ “%@” om te bevestigen",
+    "Keep project": "Project behouden",
+    "Delete project": "Project verwijderen",
+    "Welcome to Tally": "Welkom bij Tally",
+    "Click this icon in your menu bar": "Klik op dit icoon in je menubalk",
+    "This is where Tally lives. Choose your language, then start the quick instructions.": "Hier woont Tally. Kies je taal en start de snelle uitleg.",
+    "Start quick instructions": "Snelle uitleg starten",
+    "Add a project": "Voeg een project toe",
+    "This is where you add and edit projects. We will create one together at the end.": "Hier voeg je projecten toe en pas je ze aan. Aan het eind maken we er samen een.",
+    "Tally opens at login. Press Control + W any time to start. Want to practise? We can create a project together, step by step.": "Tally opent bij het inloggen. Druk altijd op Control + W om te starten. Wil je oefenen? We kunnen samen stap voor stap een project maken.",
+    "Let's make your first one together, step by step.": "Laten we samen je eerste maken, stap voor stap.",
+    "Create a project": "Project maken",
+    "Name it": "Geef het een naam",
+    "Type a name for your project, for example Writing or Client work. Then tap Next.": "Typ een naam voor je project, bijvoorbeeld Schrijven of Klantwerk. Tik daarna op Volgende.",
+    "Pick a colour": "Kies een kleur",
+    "Choose a colour for the card. The preview at the top changes as you go.": "Kies een kleur voor de kaart. Het voorbeeld bovenaan verandert mee.",
+    "Add a logo or photo": "Voeg een logo of foto toe",
+    "Optional. Tap Choose image to use a logo or a photo, or just tap Next to skip.": "Optioneel. Tik op Afbeelding kiezen voor een logo of foto, of tik op Volgende om over te slaan.",
+    "Your shortcut": "Je sneltoets",
+    "This key is suggested from the name. Press Control + this key anywhere to clock in or out. You can change it.": "Deze toets is voorgesteld op basis van de naam. Druk overal op Control + deze toets om te starten of stoppen. Je kunt hem aanpassen.",
+    "Save it": "Bewaar het",
+    "Tap Save. Your project appears on the Track tab, ready to use.": "Tik op Bewaren. Je project verschijnt op het tabblad Tijd, klaar voor gebruik.",
+    "Got it": "Begrepen",
+    "Your settings": "Je instellingen",
+    "Turn Touch ID on or off, change the language and choose if Tally opens at login.": "Zet Touch ID aan of uit, wijzig de taal en kies of Tally bij het inloggen opent.",
+    "Clock in and out": "In- en uitklokken",
+    "Tap a project to clock in. Tap it again to clock out. Or press Control + its key from anywhere. Control + W lets you choose.": "Tik op een project om te starten. Tik nogmaals om te stoppen. Of druk overal op Control + de toets ervan. Met Control + W kies je.",
+    "See your hours": "Bekijk je uren",
+    "Stats shows totals and averages for each project.": "Cijfers toont totalen en gemiddelden per project.",
+    "Fix your log": "Pas je logboek aan",
+    "Log lets you edit or add time by hand. Going to sleep stops the clock for you.": "In het Logboek pas je tijd handmatig aan of voeg je die toe. Als je Mac in slaap gaat, stopt de klok vanzelf.",
+    "You're all set": "Alles klaar",
+    "Create your first project": "Maak je eerste project",
+    "Create first project": "Eerste project maken",
+    "Skip": "Overslaan",
+    "Back": "Terug",
+    "Next": "Volgende",
+    "Done": "Klaar",
+    "Others": "Andere",
+    "Thanks for installing Tally! I hope it helps you manage your work. It is designed to be a very, very simple app. For any feedback or extra features, contact me at:": "Bedankt voor het installeren van Tally! Ik hoop dat het je helpt je werk te beheren. Het is bedoeld als een heel, heel simpele app. Voor feedback of extra functies kun je me bereiken op:"
+]
+
+private let translationsFR: [String: String] = [
+    "Your log file could not be read. A copy was kept in the data folder.": "Impossible de lire ton fichier de journal. Une copie a été conservée dans le dossier de données.",
+    "Your last session was closed at %@ because the app restarted. You can edit it in the Log.": "Ta dernière session a été fermée à %@ car l'app a redémarré. Tu peux la modifier dans le Journal.",
+    "Stopped %@ at %@ when your Mac went to sleep.": "%@ s'est arrêté à %@ quand ton Mac est passé en veille.",
+    "Could not change the open at login setting: %@": "Impossible de modifier l'ouverture à la connexion : %@",
+    "Open Tally": "Ouvrir Tally",
+    "Clock out of %@": "Arrêter %@",
+    "Clock in": "Démarrer",
+    "Clock in to %@": "Démarrer %@",
+    "Give the project a name.": "Donne un nom au projet.",
+    "You already have a project called %@.": "Tu as déjà un projet nommé %@.",
+    "That is the limit: 12 projects.": "C'est la limite : 12 projets.",
+    "The key %@ is already used by %@.": "La touche %@ est déjà utilisée par %@.",
+    "Control+W is reserved for choosing a project. Pick another key.": "Control+W est réservé au choix d'un projet. Choisis une autre touche.",
+    "That key cannot be used as a shortcut.": "Cette touche ne peut pas servir de raccourci.",
+    "Project name": "Nom du projet",
+    "%@ today": "%@ aujourd'hui",
+    "What are you starting?": "Tu démarres quoi ?",
+    "Press a key to start. Esc to cancel.": "Appuie sur une touche pour démarrer. Échap pour annuler.",
+    "Track": "Suivi",
+    "Stats": "Stats",
+    "Log": "Journal",
+    "Projects": "Projets",
+    "Quit Tally": "Quitter Tally",
+    "TRACKING %@": "SUIVI : %@",
+    "since %@": "depuis %@",
+    "READY": "PRÊT",
+    "Add a project to start": "Ajoute un projet pour démarrer",
+    "Pick a project to start": "Choisis un projet pour démarrer",
+    "Add your first project": "Ajoute ton premier projet",
+    "Clock out": "Arrêter",
+    "Switch": "Changer",
+    "choose": "choisir",
+    "New project": "Nouveau projet",
+    "Today": "Aujourd'hui",
+    "This week": "Cette semaine",
+    "This month": "Ce mois-ci",
+    "This year": "Cette année",
+    "All": "Tout",
+    "Last 7 days": "7 derniers jours",
+    "Averages": "Moyennes",
+    "Per day": "Par jour",
+    "Per week": "Par semaine",
+    "Per month": "Par mois",
+    "Per day only counts days you worked. Weeks and months count from your first log.": "Par jour ne compte que les jours travaillés. Les semaines et les mois comptent depuis ta première entrée.",
+    "Nothing logged yet.": "Rien d'enregistré pour l'instant.",
+    "Add time": "Ajouter du temps",
+    "Edit time": "Modifier le temps",
+    "Export CSV": "Exporter en CSV",
+    "%@ to %@": "%@ à %@",
+    "now": "maintenant",
+    "Start": "Début",
+    "End": "Fin",
+    "Still running. Clock out to set the end time.": "Toujours en cours. Arrête le chrono pour fixer l'heure de fin.",
+    "Total: %@": "Total : %@",
+    "End must be after start.": "La fin doit être après le début.",
+    "Note (optional)": "Note (facultatif)",
+    "Delete": "Supprimer",
+    "Cancel": "Annuler",
+    "Save": "Enregistrer",
+    "No projects yet. Add one to start tracking.": "Pas encore de projets. Ajoutes-en un pour commencer.",
+    "Archived": "Archivés",
+    "Restore": "Restaurer",
+    "Hours of archived projects stay in your Log and Stats.": "Les heures des projets archivés restent dans ton Journal et tes Stats.",
+    "Settings": "Réglages",
+    "Use Touch ID": "Utiliser Touch ID",
+    "Off: no fingerprint is asked. Use this if your Mac has no Touch ID.": "Désactivé : aucune empreinte demandée. Utile si ton Mac n'a pas Touch ID.",
+    "Language": "Langue",
+    "Shortcuts": "Raccourcis",
+    "Made by Gil": "Créé par Gil",
+    "Feedback or feature suggestions:": "Retours ou idées de fonctionnalités :",
+    "Clock out, or choose what to start": "Arrêter, ou choisir quoi démarrer",
+    "Show quick instructions": "Afficher les instructions rapides",
+    "Open at login": "Ouvrir à la connexion",
+    "To turn this on, put Tally in your Applications folder and open it from there.": "Pour l'activer, place Tally dans ton dossier Applications et ouvre-le depuis là.",
+    "macOS needs your OK in System Settings > General > Login Items.": "macOS a besoin de ton accord dans Réglages Système > Général > Ouverture.",
+    "Edit project": "Modifier le projet",
+    "Name": "Nom",
+    "For example: Writing, Client work, Gym": "Par exemple : Écriture, Clients, Sport",
+    "Colour": "Couleur",
+    "Or a custom colour": "Ou une couleur personnalisée",
+    "Logo or photo (optional)": "Logo ou photo (facultatif)",
+    "Choose image…": "Choisir une image…",
+    "Remove": "Retirer",
+    "It shows on the card. Wide logos and square photos both work.": "Il s'affiche sur la carte. Les logos larges et les photos carrées fonctionnent.",
+    "Shortcut": "Raccourci",
+    "Starts and stops this project from anywhere. Control + W is always \"choose\".": "Démarre et arrête ce projet de n'importe où. Control + W sert toujours à « choisir ».",
+    "Delete this project…": "Supprimer ce projet…",
+    "%@ is logged on this project. It stays in your Log and Stats, and the project moves to Archived, where you can restore it any time.": "%@ sont enregistrées sur ce projet. Elles restent dans ton Journal et tes Stats, et le projet passe dans Archivés, où tu peux le restaurer à tout moment.",
+    "Nothing is logged on this project, so it will be removed.": "Rien n'est enregistré sur ce projet, il sera donc supprimé.",
+    "This project is running. Clock out first.": "Ce projet est en cours. Arrête-le d'abord.",
+    "Type \"%@\" to confirm": "Tape « %@ » pour confirmer",
+    "Keep project": "Garder le projet",
+    "Delete project": "Supprimer le projet",
+    "Welcome to Tally": "Bienvenue sur Tally",
+    "Click this icon in your menu bar": "Clique sur cette icône dans ta barre des menus",
+    "This is where Tally lives. Choose your language, then start the quick instructions.": "C'est ici que vit Tally. Choisis ta langue, puis lance les instructions rapides.",
+    "Start quick instructions": "Lancer les instructions rapides",
+    "Add a project": "Ajoute un projet",
+    "This is where you add and edit projects. We will create one together at the end.": "Ici tu ajoutes et modifies tes projets. À la fin, on en crée un ensemble.",
+    "Tally opens at login. Press Control + W any time to start. Want to practise? We can create a project together, step by step.": "Tally s'ouvre à la connexion. Appuie sur Control + W à tout moment pour démarrer. Envie de t'entraîner ? On peut créer un projet ensemble, pas à pas.",
+    "Let's make your first one together, step by step.": "Créons ton premier ensemble, pas à pas.",
+    "Create a project": "Créer un projet",
+    "Name it": "Donne-lui un nom",
+    "Type a name for your project, for example Writing or Client work. Then tap Next.": "Saisis un nom pour ton projet, par exemple Écriture ou Clients. Puis appuie sur Suivant.",
+    "Pick a colour": "Choisis une couleur",
+    "Choose a colour for the card. The preview at the top changes as you go.": "Choisis une couleur pour la carte. L'aperçu en haut change au fur et à mesure.",
+    "Add a logo or photo": "Ajoute un logo ou une photo",
+    "Optional. Tap Choose image to use a logo or a photo, or just tap Next to skip.": "Facultatif. Appuie sur Choisir une image pour un logo ou une photo, ou sur Suivant pour passer.",
+    "Your shortcut": "Ton raccourci",
+    "This key is suggested from the name. Press Control + this key anywhere to clock in or out. You can change it.": "Cette touche est suggérée d'après le nom. Appuie sur Control + cette touche n'importe où pour démarrer ou arrêter. Tu peux la changer.",
+    "Save it": "Enregistre-le",
+    "Tap Save. Your project appears on the Track tab, ready to use.": "Appuie sur Enregistrer. Ton projet apparaît dans l'onglet Suivi, prêt à l'emploi.",
+    "Got it": "Compris",
+    "Your settings": "Tes réglages",
+    "Turn Touch ID on or off, change the language and choose if Tally opens at login.": "Active ou désactive Touch ID, change la langue et choisis si Tally s'ouvre à la connexion.",
+    "Clock in and out": "Démarrer et arrêter",
+    "Tap a project to clock in. Tap it again to clock out. Or press Control + its key from anywhere. Control + W lets you choose.": "Appuie sur un projet pour démarrer. Appuie encore pour arrêter. Ou utilise Control + sa touche, de n'importe où. Control + W te laisse choisir.",
+    "See your hours": "Vois tes heures",
+    "Stats shows totals and averages for each project.": "Stats affiche les totaux et moyennes de chaque projet.",
+    "Fix your log": "Corrige ton journal",
+    "Log lets you edit or add time by hand. Going to sleep stops the clock for you.": "Le Journal te permet de modifier ou d'ajouter du temps à la main. La mise en veille arrête le chrono pour toi.",
+    "You're all set": "Tout est prêt",
+    "Create your first project": "Crée ton premier projet",
+    "Create first project": "Créer le premier projet",
+    "Skip": "Passer",
+    "Back": "Retour",
+    "Next": "Suivant",
+    "Done": "Terminé",
+    "Others": "Autres",
+    "Thanks for installing Tally! I hope it helps you manage your work. It is designed to be a very, very simple app. For any feedback or extra features, contact me at:": "Merci d'avoir installé Tally ! J'espère que cela t'aidera à gérer ton travail. C'est une app pensée pour être très, très simple. Pour tout retour ou fonctionnalité en plus, écris-moi à :"
+]
+
+private let translationsDE: [String: String] = [
+    "Your log file could not be read. A copy was kept in the data folder.": "Deine Protokolldatei konnte nicht gelesen werden. Eine Kopie wurde im Datenordner gespeichert.",
+    "Your last session was closed at %@ because the app restarted. You can edit it in the Log.": "Deine letzte Sitzung wurde um %@ beendet, weil die App neu gestartet wurde. Du kannst sie im Protokoll bearbeiten.",
+    "Stopped %@ at %@ when your Mac went to sleep.": "%@ wurde um %@ gestoppt, als dein Mac in den Ruhezustand ging.",
+    "Could not change the open at login setting: %@": "Die Einstellung zum Öffnen bei der Anmeldung konnte nicht geändert werden: %@",
+    "Open Tally": "Tally öffnen",
+    "Clock out of %@": "%@ stoppen",
+    "Clock in": "Starten",
+    "Clock in to %@": "%@ starten",
+    "Give the project a name.": "Gib dem Projekt einen Namen.",
+    "You already have a project called %@.": "Du hast bereits ein Projekt namens %@.",
+    "That is the limit: 12 projects.": "Das ist das Limit: 12 Projekte.",
+    "The key %@ is already used by %@.": "Die Taste %@ wird bereits von %@ verwendet.",
+    "Control+W is reserved for choosing a project. Pick another key.": "Control+W ist für die Projektauswahl reserviert. Wähle eine andere Taste.",
+    "That key cannot be used as a shortcut.": "Diese Taste kann nicht als Kurzbefehl verwendet werden.",
+    "Project name": "Projektname",
+    "%@ today": "%@ heute",
+    "What are you starting?": "Womit startest du?",
+    "Press a key to start. Esc to cancel.": "Drücke eine Taste zum Starten. Esc zum Abbrechen.",
+    "Track": "Zeit",
+    "Stats": "Statistik",
+    "Log": "Protokoll",
+    "Projects": "Projekte",
+    "Quit Tally": "Tally beenden",
+    "TRACKING %@": "LÄUFT: %@",
+    "since %@": "seit %@",
+    "READY": "BEREIT",
+    "Add a project to start": "Füge ein Projekt hinzu, um zu starten",
+    "Pick a project to start": "Wähle ein Projekt zum Starten",
+    "Add your first project": "Füge dein erstes Projekt hinzu",
+    "Clock out": "Stoppen",
+    "Switch": "Wechseln",
+    "choose": "auswählen",
+    "New project": "Neues Projekt",
+    "Today": "Heute",
+    "This week": "Diese Woche",
+    "This month": "Diesen Monat",
+    "This year": "Dieses Jahr",
+    "All": "Alle",
+    "Last 7 days": "Letzte 7 Tage",
+    "Averages": "Durchschnitte",
+    "Per day": "Pro Tag",
+    "Per week": "Pro Woche",
+    "Per month": "Pro Monat",
+    "Per day only counts days you worked. Weeks and months count from your first log.": "Pro Tag zählt nur Tage, an denen du gearbeitet hast. Wochen und Monate zählen ab deinem ersten Eintrag.",
+    "Nothing logged yet.": "Noch nichts erfasst.",
+    "Add time": "Zeit hinzufügen",
+    "Edit time": "Zeit bearbeiten",
+    "Export CSV": "CSV exportieren",
+    "%@ to %@": "%@ bis %@",
+    "now": "jetzt",
+    "Start": "Beginn",
+    "End": "Ende",
+    "Still running. Clock out to set the end time.": "Läuft noch. Stoppe die Uhr, um die Endzeit festzulegen.",
+    "Total: %@": "Gesamt: %@",
+    "End must be after start.": "Das Ende muss nach dem Beginn liegen.",
+    "Note (optional)": "Notiz (optional)",
+    "Delete": "Löschen",
+    "Cancel": "Abbrechen",
+    "Save": "Speichern",
+    "No projects yet. Add one to start tracking.": "Noch keine Projekte. Füge eines hinzu, um zu starten.",
+    "Archived": "Archiviert",
+    "Restore": "Wiederherstellen",
+    "Hours of archived projects stay in your Log and Stats.": "Die Stunden archivierter Projekte bleiben in Protokoll und Statistik.",
+    "Settings": "Einstellungen",
+    "Use Touch ID": "Touch ID verwenden",
+    "Off: no fingerprint is asked. Use this if your Mac has no Touch ID.": "Aus: Es wird kein Fingerabdruck verlangt. Nutze das, wenn dein Mac kein Touch ID hat.",
+    "Language": "Sprache",
+    "Shortcuts": "Kurzbefehle",
+    "Made by Gil": "Entwickelt von Gil",
+    "Feedback or feature suggestions:": "Feedback oder Funktionsideen:",
+    "Clock out, or choose what to start": "Stoppen oder auswählen, was du startest",
+    "Show quick instructions": "Kurzanleitung anzeigen",
+    "Open at login": "Bei Anmeldung öffnen",
+    "To turn this on, put Tally in your Applications folder and open it from there.": "Lege Tally dazu in deinen Programme-Ordner und öffne es von dort.",
+    "macOS needs your OK in System Settings > General > Login Items.": "macOS braucht deine Zustimmung unter Systemeinstellungen > Allgemein > Anmeldeobjekte.",
+    "Edit project": "Projekt bearbeiten",
+    "Name": "Name",
+    "For example: Writing, Client work, Gym": "Zum Beispiel: Schreiben, Kundenarbeit, Sport",
+    "Colour": "Farbe",
+    "Or a custom colour": "Oder eine eigene Farbe",
+    "Logo or photo (optional)": "Logo oder Foto (optional)",
+    "Choose image…": "Bild wählen…",
+    "Remove": "Entfernen",
+    "It shows on the card. Wide logos and square photos both work.": "Es erscheint auf der Karte. Breite Logos und quadratische Fotos funktionieren beide.",
+    "Shortcut": "Kurzbefehl",
+    "Starts and stops this project from anywhere. Control + W is always \"choose\".": "Startet und stoppt dieses Projekt von überall. Control + W ist immer „auswählen“.",
+    "Delete this project…": "Dieses Projekt löschen…",
+    "%@ is logged on this project. It stays in your Log and Stats, and the project moves to Archived, where you can restore it any time.": "%@ sind für dieses Projekt erfasst. Sie bleiben in Protokoll und Statistik, und das Projekt wird archiviert. Dort kannst du es jederzeit wiederherstellen.",
+    "Nothing is logged on this project, so it will be removed.": "Für dieses Projekt ist nichts erfasst, deshalb wird es gelöscht.",
+    "This project is running. Clock out first.": "Dieses Projekt läuft. Stoppe es zuerst.",
+    "Type \"%@\" to confirm": "Tippe „%@“ zur Bestätigung",
+    "Keep project": "Projekt behalten",
+    "Delete project": "Projekt löschen",
+    "Welcome to Tally": "Willkommen bei Tally",
+    "Click this icon in your menu bar": "Klicke auf dieses Symbol in deiner Menüleiste",
+    "This is where Tally lives. Choose your language, then start the quick instructions.": "Hier lebt Tally. Wähle deine Sprache und starte die Kurzanleitung.",
+    "Start quick instructions": "Kurzanleitung starten",
+    "Add a project": "Füge ein Projekt hinzu",
+    "This is where you add and edit projects. We will create one together at the end.": "Hier fügst du Projekte hinzu und bearbeitest sie. Am Ende erstellen wir gemeinsam eines.",
+    "Tally opens at login. Press Control + W any time to start. Want to practise? We can create a project together, step by step.": "Tally öffnet sich bei der Anmeldung. Drücke jederzeit Control + W zum Starten. Willst du üben? Wir können gemeinsam Schritt für Schritt ein Projekt erstellen.",
+    "Let's make your first one together, step by step.": "Lass uns gemeinsam dein erstes erstellen, Schritt für Schritt.",
+    "Create a project": "Projekt erstellen",
+    "Name it": "Gib ihm einen Namen",
+    "Type a name for your project, for example Writing or Client work. Then tap Next.": "Gib deinem Projekt einen Namen, zum Beispiel Schreiben oder Kundenarbeit. Tippe dann auf Weiter.",
+    "Pick a colour": "Wähle eine Farbe",
+    "Choose a colour for the card. The preview at the top changes as you go.": "Wähle eine Farbe für die Karte. Die Vorschau oben ändert sich mit.",
+    "Add a logo or photo": "Füge ein Logo oder Foto hinzu",
+    "Optional. Tap Choose image to use a logo or a photo, or just tap Next to skip.": "Optional. Tippe auf Bild wählen für ein Logo oder Foto, oder auf Weiter zum Überspringen.",
+    "Your shortcut": "Dein Kurzbefehl",
+    "This key is suggested from the name. Press Control + this key anywhere to clock in or out. You can change it.": "Diese Taste wird aus dem Namen vorgeschlagen. Drücke überall Control + diese Taste zum Starten oder Stoppen. Du kannst sie ändern.",
+    "Save it": "Speichere es",
+    "Tap Save. Your project appears on the Track tab, ready to use.": "Tippe auf Speichern. Dein Projekt erscheint im Tab Zeit, bereit zur Nutzung.",
+    "Got it": "Verstanden",
+    "Your settings": "Deine Einstellungen",
+    "Turn Touch ID on or off, change the language and choose if Tally opens at login.": "Schalte Touch ID ein oder aus, ändere die Sprache und wähle, ob Tally bei der Anmeldung öffnet.",
+    "Clock in and out": "Ein- und ausstempeln",
+    "Tap a project to clock in. Tap it again to clock out. Or press Control + its key from anywhere. Control + W lets you choose.": "Tippe auf ein Projekt zum Starten. Tippe erneut zum Stoppen. Oder drücke überall Control + seine Taste. Mit Control + W wählst du aus.",
+    "See your hours": "Sieh deine Stunden",
+    "Stats shows totals and averages for each project.": "Statistik zeigt Summen und Durchschnitte je Projekt.",
+    "Fix your log": "Korrigiere dein Protokoll",
+    "Log lets you edit or add time by hand. Going to sleep stops the clock for you.": "Im Protokoll kannst du Zeit von Hand bearbeiten oder hinzufügen. Im Ruhezustand stoppt die Uhr von selbst.",
+    "You're all set": "Alles bereit",
+    "Create your first project": "Erstelle dein erstes Projekt",
+    "Create first project": "Erstes Projekt erstellen",
+    "Skip": "Überspringen",
+    "Back": "Zurück",
+    "Next": "Weiter",
+    "Done": "Fertig",
+    "Others": "Andere",
+    "Thanks for installing Tally! I hope it helps you manage your work. It is designed to be a very, very simple app. For any feedback or extra features, contact me at:": "Danke, dass du Tally installiert hast! Ich hoffe, es hilft dir, deine Arbeit zu organisieren. Es soll eine sehr, sehr einfache App sein. Für Feedback oder zusätzliche Funktionen erreichst du mich unter:"
+]
+
+private let translationsIT: [String: String] = [
+    "Your log file could not be read. A copy was kept in the data folder.": "Impossibile leggere il file del registro. Una copia è stata conservata nella cartella dei dati.",
+    "Your last session was closed at %@ because the app restarted. You can edit it in the Log.": "La tua ultima sessione è stata chiusa alle %@ perché l'app si è riavviata. Puoi modificarla nel Registro.",
+    "Stopped %@ at %@ when your Mac went to sleep.": "%@ si è fermato alle %@ quando il Mac è andato in stop.",
+    "Could not change the open at login setting: %@": "Impossibile modificare l'apertura all'accesso: %@",
+    "Open Tally": "Apri Tally",
+    "Clock out of %@": "Ferma %@",
+    "Clock in": "Avvia",
+    "Clock in to %@": "Avvia %@",
+    "Give the project a name.": "Dai un nome al progetto.",
+    "You already have a project called %@.": "Hai già un progetto chiamato %@.",
+    "That is the limit: 12 projects.": "Questo è il limite: 12 progetti.",
+    "The key %@ is already used by %@.": "Il tasto %@ è già usato da %@.",
+    "Control+W is reserved for choosing a project. Pick another key.": "Control+W è riservato alla scelta di un progetto. Scegli un altro tasto.",
+    "That key cannot be used as a shortcut.": "Questo tasto non può essere usato come scorciatoia.",
+    "Project name": "Nome del progetto",
+    "%@ today": "%@ oggi",
+    "What are you starting?": "Cosa stai iniziando?",
+    "Press a key to start. Esc to cancel.": "Premi un tasto per iniziare. Esc per annullare.",
+    "Track": "Tempo",
+    "Stats": "Statistiche",
+    "Log": "Registro",
+    "Projects": "Progetti",
+    "Quit Tally": "Esci da Tally",
+    "TRACKING %@": "TRACCIO %@",
+    "since %@": "dalle %@",
+    "READY": "PRONTO",
+    "Add a project to start": "Aggiungi un progetto per iniziare",
+    "Pick a project to start": "Scegli un progetto per iniziare",
+    "Add your first project": "Aggiungi il tuo primo progetto",
+    "Clock out": "Ferma",
+    "Switch": "Cambia",
+    "choose": "scegliere",
+    "New project": "Nuovo progetto",
+    "Today": "Oggi",
+    "This week": "Questa settimana",
+    "This month": "Questo mese",
+    "This year": "Quest'anno",
+    "All": "Tutto",
+    "Last 7 days": "Ultimi 7 giorni",
+    "Averages": "Medie",
+    "Per day": "Al giorno",
+    "Per week": "A settimana",
+    "Per month": "Al mese",
+    "Per day only counts days you worked. Weeks and months count from your first log.": "Al giorno conta solo i giorni in cui hai lavorato. Settimane e mesi contano dalla tua prima registrazione.",
+    "Nothing logged yet.": "Ancora nulla registrato.",
+    "Add time": "Aggiungi tempo",
+    "Edit time": "Modifica tempo",
+    "Export CSV": "Esporta CSV",
+    "%@ to %@": "da %@ a %@",
+    "now": "adesso",
+    "Start": "Inizio",
+    "End": "Fine",
+    "Still running. Clock out to set the end time.": "Ancora in corso. Ferma il timer per impostare l'ora di fine.",
+    "Total: %@": "Totale: %@",
+    "End must be after start.": "La fine deve essere dopo l'inizio.",
+    "Note (optional)": "Nota (facoltativa)",
+    "Delete": "Elimina",
+    "Cancel": "Annulla",
+    "Save": "Salva",
+    "No projects yet. Add one to start tracking.": "Ancora nessun progetto. Aggiungine uno per iniziare.",
+    "Archived": "Archiviati",
+    "Restore": "Ripristina",
+    "Hours of archived projects stay in your Log and Stats.": "Le ore dei progetti archiviati restano nel Registro e nelle Statistiche.",
+    "Settings": "Impostazioni",
+    "Use Touch ID": "Usa Touch ID",
+    "Off: no fingerprint is asked. Use this if your Mac has no Touch ID.": "Disattivato: non viene chiesta l'impronta. Usalo se il tuo Mac non ha Touch ID.",
+    "Language": "Lingua",
+    "Shortcuts": "Scorciatoie",
+    "Made by Gil": "Creato da Gil",
+    "Feedback or feature suggestions:": "Feedback o idee per nuove funzioni:",
+    "Clock out, or choose what to start": "Ferma, o scegli cosa avviare",
+    "Show quick instructions": "Mostra le istruzioni rapide",
+    "Open at login": "Apri all'accesso",
+    "To turn this on, put Tally in your Applications folder and open it from there.": "Per attivarlo, metti Tally nella cartella Applicazioni e aprilo da lì.",
+    "macOS needs your OK in System Settings > General > Login Items.": "macOS ha bisogno del tuo consenso in Impostazioni di Sistema > Generali > Elementi login.",
+    "Edit project": "Modifica progetto",
+    "Name": "Nome",
+    "For example: Writing, Client work, Gym": "Per esempio: Scrittura, Clienti, Palestra",
+    "Colour": "Colore",
+    "Or a custom colour": "Oppure un colore personalizzato",
+    "Logo or photo (optional)": "Logo o foto (facoltativo)",
+    "Choose image…": "Scegli immagine…",
+    "Remove": "Rimuovi",
+    "It shows on the card. Wide logos and square photos both work.": "Appare sulla scheda. Funzionano sia logo larghi sia foto quadrate.",
+    "Shortcut": "Scorciatoia",
+    "Starts and stops this project from anywhere. Control + W is always \"choose\".": "Avvia e ferma questo progetto da qualsiasi punto. Control + W serve sempre a «scegliere».",
+    "Delete this project…": "Elimina questo progetto…",
+    "%@ is logged on this project. It stays in your Log and Stats, and the project moves to Archived, where you can restore it any time.": "%@ registrate su questo progetto. Restano nel Registro e nelle Statistiche, e il progetto passa in Archiviati, dove puoi ripristinarlo quando vuoi.",
+    "Nothing is logged on this project, so it will be removed.": "Su questo progetto non c'è nulla di registrato, quindi verrà rimosso.",
+    "This project is running. Clock out first.": "Questo progetto è in corso. Fermalo prima.",
+    "Type \"%@\" to confirm": "Scrivi «%@» per confermare",
+    "Keep project": "Tieni il progetto",
+    "Delete project": "Elimina progetto",
+    "Welcome to Tally": "Benvenuto in Tally",
+    "Click this icon in your menu bar": "Clicca su questa icona nella barra dei menu",
+    "This is where Tally lives. Choose your language, then start the quick instructions.": "Qui vive Tally. Scegli la lingua, poi avvia le istruzioni rapide.",
+    "Start quick instructions": "Avvia le istruzioni rapide",
+    "Add a project": "Aggiungi un progetto",
+    "This is where you add and edit projects. We will create one together at the end.": "Qui aggiungi e modifichi i progetti. Alla fine ne creeremo uno insieme.",
+    "Tally opens at login. Press Control + W any time to start. Want to practise? We can create a project together, step by step.": "Tally si apre all'accesso. Premi Control + W in qualsiasi momento per iniziare. Vuoi esercitarti? Possiamo creare un progetto insieme, passo dopo passo.",
+    "Let's make your first one together, step by step.": "Creiamo insieme il tuo primo, passo dopo passo.",
+    "Create a project": "Crea un progetto",
+    "Name it": "Dagli un nome",
+    "Type a name for your project, for example Writing or Client work. Then tap Next.": "Scrivi un nome per il progetto, per esempio Scrittura o Clienti. Poi tocca Avanti.",
+    "Pick a colour": "Scegli un colore",
+    "Choose a colour for the card. The preview at the top changes as you go.": "Scegli un colore per la scheda. L'anteprima in alto cambia man mano.",
+    "Add a logo or photo": "Aggiungi un logo o una foto",
+    "Optional. Tap Choose image to use a logo or a photo, or just tap Next to skip.": "Facoltativo. Tocca Scegli immagine per un logo o una foto, oppure Avanti per saltare.",
+    "Your shortcut": "La tua scorciatoia",
+    "This key is suggested from the name. Press Control + this key anywhere to clock in or out. You can change it.": "Questo tasto è suggerito dal nome. Premi Control + questo tasto ovunque per avviare o fermare. Puoi cambiarlo.",
+    "Save it": "Salvalo",
+    "Tap Save. Your project appears on the Track tab, ready to use.": "Tocca Salva. Il progetto appare nella scheda Tempo, pronto all'uso.",
+    "Got it": "Capito",
+    "Your settings": "Le tue impostazioni",
+    "Turn Touch ID on or off, change the language and choose if Tally opens at login.": "Attiva o disattiva Touch ID, cambia la lingua e scegli se Tally si apre all'accesso.",
+    "Clock in and out": "Avviare e fermare",
+    "Tap a project to clock in. Tap it again to clock out. Or press Control + its key from anywhere. Control + W lets you choose.": "Tocca un progetto per avviare. Toccalo di nuovo per fermare. Oppure premi Control + il suo tasto, ovunque. Con Control + W scegli.",
+    "See your hours": "Guarda le tue ore",
+    "Stats shows totals and averages for each project.": "Statistiche mostra totali e medie per ogni progetto.",
+    "Fix your log": "Correggi il registro",
+    "Log lets you edit or add time by hand. Going to sleep stops the clock for you.": "Nel Registro puoi modificare o aggiungere tempo a mano. Quando il Mac va in stop, il timer si ferma da solo.",
+    "You're all set": "Tutto pronto",
+    "Create your first project": "Crea il tuo primo progetto",
+    "Create first project": "Crea il primo progetto",
+    "Skip": "Salta",
+    "Back": "Indietro",
+    "Next": "Avanti",
+    "Done": "Fatto",
+    "Others": "Altre",
+    "Thanks for installing Tally! I hope it helps you manage your work. It is designed to be a very, very simple app. For any feedback or extra features, contact me at:": "Grazie per aver installato Tally! Spero ti aiuti a gestire il tuo lavoro. È pensata per essere un'app molto, molto semplice. Per feedback o funzioni extra, scrivimi a:"
 ]
 
 // MARK: - Model
@@ -1048,13 +1605,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         tourWindow?.close()
         let view = OnboardingView(start: { [weak self] in self?.beginTour() })
             .environmentObject(store)
-        let w = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 420, height: 380),
+        let w = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 440, height: 600),
                          styleMask: [.titled, .closable], backing: .buffered, defer: false)
         w.title = "Tally"
         w.contentView = NSHostingView(rootView: view)
         w.isReleasedWhenClosed = false
         if let f = NSScreen.main?.visibleFrame {
-            w.setFrameTopLeftPoint(NSPoint(x: f.maxX - 420 - 24, y: f.maxY - 12))
+            w.setFrameTopLeftPoint(NSPoint(x: f.maxX - 440 - 24, y: f.maxY - 12))
         } else {
             w.center()
         }
@@ -1865,11 +2422,7 @@ struct ProjectsView: View {
                     Divider()
                     VStack(alignment: .leading, spacing: 8) {
                         Text(T("Language")).font(.callout)
-                        Picker("", selection: $store.language) {
-                            ForEach(AppLang.allCases) { l in Text(l.label).tag(l) }
-                        }
-                        .pickerStyle(.segmented)
-                        .labelsHidden()
+                        LanguagePicker()
                     }
                     .padding(.vertical, 10)
                     Divider()
@@ -1901,7 +2454,7 @@ struct ProjectsView: View {
 
                 // Quiet credit at the very end
                 VStack(spacing: 2) {
-                    Text(T("Made by Gil Nobre"))
+                    Text(T("Made by Gil"))
                     HStack(spacing: 4) {
                         Text(T("Feedback or feature suggestions:"))
                         Link("pupal08.ribbons@icloud.com", destination: URL(string: "mailto:pupal08.ribbons@icloud.com")!)
@@ -1913,12 +2466,6 @@ struct ProjectsView: View {
                 .minimumScaleFactor(0.7)
                 .frame(maxWidth: .infinity)
                 .padding(.top, 8)
-
-                Text("Created by Gil Nobre")
-                    .font(.system(size: 9, design: .rounded))
-                    .foregroundStyle(.quaternary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 16)
             }
         }
         .onChange(of: store.tourStep) { step in
@@ -2271,47 +2818,138 @@ struct ProjectEditorView: View {
 
 // MARK: - Welcome window and guided tour
 
-/// First start only: points at the menu bar icon, lets you pick a language, then starts the tour.
+/// First start only: thanks the user, lets them pick a language, then starts the tour.
 struct OnboardingView: View {
     @EnvironmentObject var store: Store
     var start: () -> Void
+    @State private var shown = false
 
     var body: some View {
-        VStack(spacing: 18) {
-            HStack {
-                Spacer()
-                Image(systemName: "arrow.up")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-                    .padding(.trailing, 24)
-            }
+        VStack(spacing: 12) {
+            AnimatedClock()
+                .padding(.top, 4)
             Text(T("Welcome to Tally"))
                 .font(.system(.title, design: .rounded, weight: .bold))
-            HStack(spacing: 12) {
-                Image(systemName: "clock")
-                    .font(.system(size: 22, weight: .medium))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(Capsule().fill(Color.primary.opacity(0.1)))
-                Text(T("Click this icon in your menu bar"))
-                    .font(.system(.headline, design: .rounded))
-            }
-            Text(T("This is where Tally lives. Choose your language, then start the quick instructions."))
+            Text(T("Thanks for installing Tally! I hope it helps you manage your work. It is designed to be a very, very simple app. For any feedback or extra features, contact me at:"))
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-            Picker("", selection: $store.language) {
-                ForEach(AppLang.allCases) { l in Text(l.label).tag(l) }
+                .fixedSize(horizontal: false, vertical: true)
+            Link("pupal08.ribbons@icloud.com", destination: URL(string: "mailto:pupal08.ribbons@icloud.com")!)
+                .font(.callout)
+            Text("Gil")
+                .font(.system(.callout, design: .rounded, weight: .semibold))
+            Divider().padding(.vertical, 4)
+            HStack(spacing: 12) {
+                Image(systemName: "clock")
+                    .font(.system(size: 20, weight: .medium))
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Capsule().fill(Color.primary.opacity(0.1)))
+                Text(T("Click this icon in your menu bar"))
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
             }
-            .pickerStyle(.segmented)
-            .labelsHidden()
+            Text(T("This is where Tally lives. Choose your language, then start the quick instructions."))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            LanguagePicker()
             Spacer(minLength: 0)
             Button(T("Start quick instructions")) { start() }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
         }
         .padding(24)
-        .frame(width: 420, height: 380)
+        .frame(width: 440, height: 600)
+        .opacity(shown ? 1 : 0)
+        .offset(y: shown ? 0 : 12)
+        .onAppear { withAnimation(.easeOut(duration: 0.7)) { shown = true } }
+    }
+}
+
+/// A small clock whose hands keep moving. Pure SwiftUI, no images.
+struct AnimatedClock: View {
+    private func hand(_ length: CGFloat, _ width: CGFloat, _ angle: Double) -> some View {
+        Capsule()
+            .frame(width: width, height: length)
+            .offset(y: -length / 2)
+            .rotationEffect(.degrees(angle))
+    }
+
+    var body: some View {
+        TimelineView(.animation) { ctx in
+            let t = ctx.date.timeIntervalSinceReferenceDate
+            let pulse = (sin(t * 2.2) + 1) / 2
+            ZStack {
+                Circle()
+                    .stroke(Color.accentColor.opacity(0.35 * (1 - pulse)), lineWidth: 2)
+                    .scaleEffect(1 + 0.4 * pulse)
+                Circle().fill(Color.primary.opacity(0.07))
+                Circle().stroke(Color.primary.opacity(0.3), lineWidth: 3)
+                ForEach(0..<12, id: \.self) { i in
+                    Capsule()
+                        .fill(Color.primary.opacity(0.35))
+                        .frame(width: 2, height: i % 3 == 0 ? 8 : 4)
+                        .offset(y: -30)
+                        .rotationEffect(.degrees(Double(i) * 30))
+                }
+                hand(20, 3, t * 3).foregroundStyle(Color.primary)
+                hand(28, 2, t * 36).foregroundStyle(Color.accentColor)
+                Circle().fill(Color.accentColor).frame(width: 7, height: 7)
+            }
+            .frame(width: 72, height: 72)
+        }
+        .frame(width: 96, height: 90)
+    }
+}
+
+/// English, Português, Español and an Others menu with more languages.
+struct LanguagePicker: View {
+    @EnvironmentObject var store: Store
+
+    private enum LangGroup: Hashable { case en, pt, es, others }
+
+    private var group: Binding<LangGroup> {
+        Binding(
+            get: {
+                switch store.language {
+                case .en: return .en
+                case .pt: return .pt
+                case .es: return .es
+                default: return .others
+                }
+            },
+            set: { g in
+                switch g {
+                case .en: store.language = .en
+                case .pt: store.language = .pt
+                case .es: store.language = .es
+                case .others:
+                    if !AppLang.others.contains(store.language) { store.language = .nl }
+                }
+            })
+    }
+
+    var body: some View {
+        VStack(spacing: 8) {
+            Picker("", selection: group) {
+                Text("English").tag(LangGroup.en)
+                Text("Português").tag(LangGroup.pt)
+                Text("Español").tag(LangGroup.es)
+                Text(T("Others")).tag(LangGroup.others)
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+
+            if AppLang.others.contains(store.language) {
+                Picker("", selection: $store.language) {
+                    ForEach(AppLang.others) { l in Text(l.label).tag(l) }
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
+            }
+        }
     }
 }
 
