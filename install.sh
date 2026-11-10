@@ -14,9 +14,16 @@ fi
 WORK="$(mktemp -d)"
 cd "$WORK"
 echo "Downloading Tally..."
-for f in WorkClockApp.swift Seeds.swift build.sh; do
-  curl -fsSL "$BASE/$f" -o "$f"
-done
+if curl -fsSL "$BASE/build.sh" -o build.sh 2>/dev/null; then
+  for f in WorkClockApp.swift Seeds.swift; do
+    curl -fsSL "$BASE/$f" -o "$f"
+  done
+else
+  # Some networks block raw.githubusercontent.com. github.com itself usually works.
+  echo "Trying another way..."
+  git clone --depth 1 "https://github.com/$REPO" repo
+  cp repo/source/* .
+fi
 bash build.sh
 cd "$HOME"
 rm -rf "$WORK"

@@ -213,6 +213,17 @@ private let translations: [String: (pt: String, es: String)] = [
     "Feedback or feature suggestions:": (pt: "Feedback ou sugestões:", es: "Comentarios o sugerencias:"),
     "Clock out, or choose what to start": (pt: "Parar, ou escolher o que começar", es: "Parar, o elegir qué empezar"),
     "Show quick instructions": (pt: "Ver instruções rápidas", es: "Ver instrucciones rápidas"),
+    "Totals": (pt: "Totais", es: "Totales"),
+    "Your data": (pt: "Os teus dados", es: "Tus datos"),
+    "Back up": (pt: "Guardar cópia", es: "Copia de seguridad"),
+    "Import": (pt: "Importar", es: "Importar"),
+    "Move your hours to a new Mac, or restore them after a reinstall.": (pt: "Muda as tuas horas para um novo Mac, ou recupera-as depois de reinstalar.", es: "Lleva tus horas a un Mac nuevo, o recupéralas tras reinstalar."),
+    "Backup saved.": (pt: "Cópia guardada.", es: "Copia guardada."),
+    "Choose a Tally backup file, or a data folder.": (pt: "Escolhe um ficheiro de cópia do Tally, ou uma pasta de dados.", es: "Elige un archivo de copia de Tally, o una carpeta de datos."),
+    "That does not look like Tally data.": (pt: "Isto não parece ser dados do Tally.", es: "Esto no parece ser datos de Tally."),
+    "Replace your current data?": (pt: "Substituir os dados atuais?", es: "¿Reemplazar tus datos actuales?"),
+    "Import %d sessions? A safety copy of your current data stays in the data folder.": (pt: "Importar %d sessões? Fica uma cópia de segurança dos dados atuais na pasta de dados.", es: "¿Importar %d sesiones? Queda una copia de seguridad de tus datos actuales en la carpeta de datos."),
+    "Imported %d sessions.": (pt: "%d sessões importadas.", es: "%d sesiones importadas."),
     "Open at login": (pt: "Abrir ao iniciar sessão", es: "Abrir al iniciar sesión"),
     "To turn this on, put Tally in your Applications folder and open it from there.":
         (pt: "Para ativar, coloca o Tally na pasta Aplicações e abre-o a partir daí.",
@@ -385,6 +396,17 @@ private let translationsNL: [String: String] = [
     "Feedback or feature suggestions:": "Feedback of ideeën voor functies:",
     "Clock out, or choose what to start": "Stoppen, of kiezen wat je start",
     "Show quick instructions": "Snelle uitleg tonen",
+    "Totals": "Totalen",
+    "Your data": "Je gegevens",
+    "Back up": "Back-up maken",
+    "Import": "Importeren",
+    "Move your hours to a new Mac, or restore them after a reinstall.": "Verhuis je uren naar een nieuwe Mac, of herstel ze na een herinstallatie.",
+    "Backup saved.": "Back-up opgeslagen.",
+    "Choose a Tally backup file, or a data folder.": "Kies een Tally-back-upbestand of een gegevensmap.",
+    "That does not look like Tally data.": "Dit lijkt geen Tally-gegevens.",
+    "Replace your current data?": "Je huidige gegevens vervangen?",
+    "Import %d sessions? A safety copy of your current data stays in the data folder.": "%d sessies importeren? Een reservekopie van je huidige gegevens blijft in de gegevensmap.",
+    "Imported %d sessions.": "%d sessies geïmporteerd.",
     "Open at login": "Openen bij inloggen",
     "To turn this on, put Tally in your Applications folder and open it from there.": "Zet Tally hiervoor in je map Programma's en open het vanaf daar.",
     "macOS needs your OK in System Settings > General > Login Items.": "macOS heeft je toestemming nodig in Systeeminstellingen > Algemeen > Inloggen.",
@@ -518,6 +540,17 @@ private let translationsFR: [String: String] = [
     "Feedback or feature suggestions:": "Retours ou idées de fonctionnalités :",
     "Clock out, or choose what to start": "Arrêter, ou choisir quoi démarrer",
     "Show quick instructions": "Afficher les instructions rapides",
+    "Totals": "Totaux",
+    "Your data": "Vos données",
+    "Back up": "Sauvegarder",
+    "Import": "Importer",
+    "Move your hours to a new Mac, or restore them after a reinstall.": "Déplacez vos heures vers un nouveau Mac, ou restaurez-les après une réinstallation.",
+    "Backup saved.": "Sauvegarde enregistrée.",
+    "Choose a Tally backup file, or a data folder.": "Choisissez un fichier de sauvegarde Tally ou un dossier de données.",
+    "That does not look like Tally data.": "Ceci ne ressemble pas à des données Tally.",
+    "Replace your current data?": "Remplacer vos données actuelles ?",
+    "Import %d sessions? A safety copy of your current data stays in the data folder.": "Importer %d sessions ? Une copie de sécurité de vos données actuelles reste dans le dossier de données.",
+    "Imported %d sessions.": "%d sessions importées.",
     "Open at login": "Ouvrir à la connexion",
     "To turn this on, put Tally in your Applications folder and open it from there.": "Pour l'activer, place Tally dans ton dossier Applications et ouvre-le depuis là.",
     "macOS needs your OK in System Settings > General > Login Items.": "macOS a besoin de ton accord dans Réglages Système > Général > Ouverture.",
@@ -651,6 +684,17 @@ private let translationsDE: [String: String] = [
     "Feedback or feature suggestions:": "Feedback oder Funktionsideen:",
     "Clock out, or choose what to start": "Stoppen oder auswählen, was du startest",
     "Show quick instructions": "Kurzanleitung anzeigen",
+    "Totals": "Summen",
+    "Your data": "Deine Daten",
+    "Back up": "Sichern",
+    "Import": "Importieren",
+    "Move your hours to a new Mac, or restore them after a reinstall.": "Übertrage deine Stunden auf einen neuen Mac oder stelle sie nach einer Neuinstallation wieder her.",
+    "Backup saved.": "Sicherung gespeichert.",
+    "Choose a Tally backup file, or a data folder.": "Wähle eine Tally-Sicherungsdatei oder einen Datenordner.",
+    "That does not look like Tally data.": "Das sieht nicht nach Tally-Daten aus.",
+    "Replace your current data?": "Deine aktuellen Daten ersetzen?",
+    "Import %d sessions? A safety copy of your current data stays in the data folder.": "%d Sitzungen importieren? Eine Sicherheitskopie deiner aktuellen Daten bleibt im Datenordner.",
+    "Imported %d sessions.": "%d Sitzungen importiert.",
     "Open at login": "Bei Anmeldung öffnen",
     "To turn this on, put Tally in your Applications folder and open it from there.": "Lege Tally dazu in deinen Programme-Ordner und öffne es von dort.",
     "macOS needs your OK in System Settings > General > Login Items.": "macOS braucht deine Zustimmung unter Systemeinstellungen > Allgemein > Anmeldeobjekte.",
@@ -784,6 +828,17 @@ private let translationsIT: [String: String] = [
     "Feedback or feature suggestions:": "Feedback o idee per nuove funzioni:",
     "Clock out, or choose what to start": "Ferma, o scegli cosa avviare",
     "Show quick instructions": "Mostra le istruzioni rapide",
+    "Totals": "Totali",
+    "Your data": "I tuoi dati",
+    "Back up": "Esegui backup",
+    "Import": "Importa",
+    "Move your hours to a new Mac, or restore them after a reinstall.": "Sposta le tue ore su un nuovo Mac, o ripristinale dopo una reinstallazione.",
+    "Backup saved.": "Backup salvato.",
+    "Choose a Tally backup file, or a data folder.": "Scegli un file di backup di Tally o una cartella dati.",
+    "That does not look like Tally data.": "Questi non sembrano dati di Tally.",
+    "Replace your current data?": "Sostituire i dati attuali?",
+    "Import %d sessions? A safety copy of your current data stays in the data folder.": "Importare %d sessioni? Una copia di sicurezza dei dati attuali resta nella cartella dati.",
+    "Imported %d sessions.": "%d sessioni importate.",
     "Open at login": "Apri all'accesso",
     "To turn this on, put Tally in your Applications folder and open it from there.": "Per attivarlo, metti Tally nella cartella Applicazioni e aprilo da lì.",
     "macOS needs your OK in System Settings > General > Login Items.": "macOS ha bisogno del tuo consenso in Impostazioni di Sistema > Generali > Elementi login.",
@@ -1379,6 +1434,87 @@ final class Store: ObservableObject {
             out += "\"\(label)\",\(iso.string(from: s.start)),\(end),\(String(format: "%.2f", s.duration(at: now) / 3600))\n"
         }
         try? out.write(to: dest, atomically: true, encoding: .utf8)
+    }
+
+    // Backup and import
+
+    private struct BackupFile: Codable {
+        var projects: [ProjectDef]
+        var sessions: [Session]
+    }
+
+    /// Saves projects and hours into one file you can keep or move to another Mac.
+    func exportBackup() {
+        let panel = NSSavePanel()
+        panel.nameFieldStringValue = "tally-backup.json"
+        NSApp.activate(ignoringOtherApps: true)
+        guard panel.runModal() == .OK, let dest = panel.url else { return }
+        let enc = JSONEncoder()
+        enc.dateEncodingStrategy = .iso8601
+        enc.outputFormatting = [.prettyPrinted, .sortedKeys]
+        if let data = try? enc.encode(BackupFile(projects: projects, sessions: sessions)) {
+            try? data.write(to: dest, options: .atomic)
+            note = T("Backup saved.")
+        }
+    }
+
+    /// Reads a Tally backup file, or an old data folder, and replaces the current data with it.
+    func importData() {
+        let open = NSOpenPanel()
+        open.canChooseFiles = true
+        open.canChooseDirectories = true
+        open.allowsMultipleSelection = false
+        open.message = T("Choose a Tally backup file, or a data folder.")
+        NSApp.activate(ignoringOtherApps: true)
+        guard open.runModal() == .OK, let url = open.url else { return }
+
+        let dec = JSONDecoder()
+        dec.dateDecodingStrategy = .iso8601
+        var newProjects: [ProjectDef]? = nil
+        var newSessions: [Session]? = nil
+        var isDir: ObjCBool = false
+        FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
+        if isDir.boolValue {
+            if let d = try? Data(contentsOf: url.appendingPathComponent("sessions.json")) {
+                newSessions = try? dec.decode([Session].self, from: d)
+            }
+            if let d = try? Data(contentsOf: url.appendingPathComponent("projects.json")) {
+                newProjects = try? dec.decode([ProjectDef].self, from: d)
+            }
+        } else if let d = try? Data(contentsOf: url), let b = try? dec.decode(BackupFile.self, from: d) {
+            newProjects = b.projects
+            newSessions = b.sessions
+        }
+        guard let incoming = newSessions else {
+            note = T("That does not look like Tally data.")
+            return
+        }
+
+        let alert = NSAlert()
+        alert.messageText = T("Replace your current data?")
+        alert.informativeText = T("Import %d sessions? A safety copy of your current data stays in the data folder.", incoming.count)
+        alert.addButton(withTitle: T("Import"))
+        alert.addButton(withTitle: T("Cancel"))
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        // Safety copy first.
+        let fm = FileManager.default
+        let before1 = dir.appendingPathComponent("sessions.before-import.json")
+        let before2 = dir.appendingPathComponent("projects.before-import.json")
+        try? fm.removeItem(at: before1)
+        try? fm.removeItem(at: before2)
+        try? fm.copyItem(at: sessionsURL, to: before1)
+        try? fm.copyItem(at: projectsURL, to: before2)
+
+        sessions = incoming
+        if let p = newProjects, !p.isEmpty { projects = p }
+        let known = Set(projects.map(\.id))
+        for id in Set(sessions.map(\.project)).sorted() where !known.contains(id) {
+            projects.append(ProjectDef.placeholder(id: id))
+        }
+        save()
+        saveProjects()
+        note = T("Imported %d sessions.", incoming.count)
     }
 }
 
@@ -2028,6 +2164,7 @@ struct DayBar: Identifiable {
 struct StatsView: View {
     @EnvironmentObject var store: Store
     @State private var filter: String? = nil
+    @State private var showAverages = false
 
     var body: some View {
         let cal = Calendar.current
@@ -2070,21 +2207,29 @@ struct StatsView: View {
                 .padding(12)
                 .background(RoundedRectangle(cornerRadius: 14).fill(Color.primary.opacity(0.06)))
 
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                    ForEach(periods, id: \.0) { p in
-                        StatCard(title: p.0, value: hm(store.seconds(filter, from: p.1.start, to: p.1.end)))
+                Picker("", selection: $showAverages) {
+                    Text(T("Totals")).tag(false)
+                    Text(T("Averages")).tag(true)
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+
+                if showAverages {
+                    HStack(spacing: 10) {
+                        StatCard(title: T("Per day"), value: hm(avg.day))
+                        StatCard(title: T("Per week"), value: hm(avg.week))
+                        StatCard(title: T("Per month"), value: hm(avg.month))
+                    }
+                    Text(T("Per day only counts days you worked. Weeks and months count from your first log."))
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                } else {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                        ForEach(periods, id: \.0) { p in
+                            StatCard(title: p.0, value: hm(store.seconds(filter, from: p.1.start, to: p.1.end)))
+                        }
                     }
                 }
-
-                Text(T("Averages")).font(.system(.subheadline, design: .rounded, weight: .semibold))
-                HStack(spacing: 10) {
-                    StatCard(title: T("Per day"), value: hm(avg.day))
-                    StatCard(title: T("Per week"), value: hm(avg.week))
-                    StatCard(title: T("Per month"), value: hm(avg.month))
-                }
-                Text(T("Per day only counts days you worked. Weeks and months count from your first log."))
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
             }
         }
     }
@@ -2157,13 +2302,10 @@ struct LogView: View {
                 } label: { Label(T("Add time"), systemImage: "plus") }
                     .buttonStyle(.borderless)
                     .disabled(store.activeProjects.isEmpty)
-                Button { store.exportCSV() } label: { Image(systemName: "square.and.arrow.up") }
-                    .buttonStyle(.borderless)
-                    .help(T("Export CSV"))
             }
 
             ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 18) {
                     if days.isEmpty {
                         Text(T("Nothing logged yet.")).foregroundStyle(.secondary).padding(.top, 20)
                     }
@@ -2180,39 +2322,53 @@ struct LogView: View {
             .filter { cal.startOfDay(for: $0.start) == day }
             .sorted { $0.start > $1.start }
         let total = store.seconds(nil, from: day, to: cal.date(byAdding: .day, value: 1, to: day)!)
+        let title = cal.isDateInToday(day)
+            ? T("Today")
+            : day.formatted(.dateTime.weekday(.wide).day().month(.abbreviated).locale(Loc.current.locale))
 
-        return VStack(alignment: .leading, spacing: 6) {
+        return VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text(day.formatted(.dateTime.weekday(.wide).day().month().locale(Loc.current.locale)))
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                Text(title)
+                    .font(.system(.footnote, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.secondary)
                 Spacer()
-                Text(hm(total)).font(.subheadline).foregroundStyle(.secondary)
+                Text(hm(total))
+                    .font(.system(.footnote, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.secondary)
             }
-            ForEach(list) { s in
+            .padding(.horizontal, 4)
+            .padding(.bottom, 6)
+
+            ForEach(Array(list.enumerated()), id: \.element.id) { i, s in
+                if i > 0 { Divider().opacity(0.5).padding(.leading, 30) }
                 Button {
                     editing = Draft(id: s.id, project: s.project, start: s.start,
                                     end: s.end ?? Date(), running: s.end == nil, isNew: false,
                                     note: s.note ?? "")
                 } label: {
-                    HStack(spacing: 8) {
-                        ProjectBadge(p: store.def(s.project), size: 18)
-                        Text(store.name(s.project))
-                            .lineLimit(1)
-                            .frame(width: 52, alignment: .leading)
-                        Text(s.note ?? T("%@ to %@", shortTime(s.start), s.end.map(shortTime) ?? T("now")))
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
+                    HStack(spacing: 10) {
+                        ProjectBadge(p: store.def(s.project), size: 20)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(store.name(s.project)).lineLimit(1)
+                            Text(T("%@ to %@", shortTime(s.start), s.end.map(shortTime) ?? T("now")))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            if let n = s.note, !n.isEmpty {
+                                Text(n).font(.caption).foregroundStyle(.tertiary).lineLimit(1)
+                            }
+                        }
                         Spacer()
                         Text(hm(s.duration(at: store.now)))
+                            .foregroundStyle(.secondary)
                     }
                     .font(.callout)
+                    .padding(.vertical, 7)
+                    .padding(.horizontal, 4)
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
             }
         }
-        .padding(12)
-        .background(RoundedRectangle(cornerRadius: 14).fill(Color.primary.opacity(0.06)))
     }
 }
 
@@ -2434,6 +2590,18 @@ struct ProjectsView: View {
                         shortcutRow(T("Clock out, or choose what to start"), "⌃ W")
                     }
                     .padding(.vertical, 10)
+                    Divider()
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(T("Your data")).font(.callout)
+                        HStack(spacing: 8) {
+                            Button(T("Back up")) { store.exportBackup() }
+                            Button(T("Import")) { store.importData() }
+                            Button(T("Export CSV")) { store.exportCSV() }
+                        }
+                        .controlSize(.small)
+                        note(T("Move your hours to a new Mac, or restore them after a reinstall."))
+                    }
+                    .padding(.top, 10)
                     Divider()
                     Button { store.onShowTour?() } label: {
                         HStack {
