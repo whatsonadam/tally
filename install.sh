@@ -1,29 +1,39 @@
 #!/bin/bash
-# Tally installer. Downloads the source and builds it on this Mac.
+# Tally installer.
 set -e
 REPO="${1:-whatsonadam/tally}"
-BASE="https://raw.githubusercontent.com/$REPO/main/source"
+APPS="$HOME/Applications"
 
-if ! xcode-select -p >/dev/null 2>&1; then
-  echo "Installing Apple Command Line Tools. Click Install in the window, wait until it finishes,"
-  echo "then paste the same line into Terminal again."
-  xcode-select --install
-  exit 1
+# 1. Ready-made app from the latest release. No tools needed.
+TMP="$(mktemp -d)"
+if curl -fsSL "https://github.com/$REPO/releases/latest/download/Tally.zip" -o "$TMP/Tally.zip" 2>/dev/null; then
+  echo "Installing Tally..."
+  pkill -x Tally 2>/dev/null || true
+  pkill -x WorkClock 2>/dev/null || true
+  mkdir -p "$APPS"
+  rm -rf "$APPS/Tally.app" "$APPS/WorkClock.app"
+  ditto -x -k "$TMP/Tally.zip" "$APPS"
+  xattr -cr "$APPS/Tally.app" 2>/dev/null || true
+  rm -rf "$TMP"
+  echo "Done. Opening Tally (it will also open at login)."
+  open "$APPS/Tally.app"
+  exit 0
 fi
 
-WORK="$(mktemp -d)"
-cd "$WORK"
-echo "Downloading Tally..."
+# 2. Fallback: build it on this Mac. This needs Xcode.
+if ! xcodebuild -version >/dev/null 2>&1; then
+  echo "Could not download Tally and Xcode is not installed to build it."
+  echo "Please check your internet connection and try again, or ask Gil."
+  exit 1
+fi
+BASE="https://raw.githubusercontent.com/$REPO/main/source"
+cd "$TMP"
 if curl -fsSL "$BASE/build.sh" -o build.sh 2>/dev/null; then
-  for f in WorkClockApp.swift Seeds.swift; do
-    curl -fsSL "$BASE/$f" -o "$f"
-  done
+  for f in WorkClockApp.swift Seeds.swift; do curl -fsSL "$BASE/$f" -o "$f"; done
 else
-  # Some networks block raw.githubusercontent.com. github.com itself usually works.
-  echo "Trying another way..."
   git clone --depth 1 "https://github.com/$REPO" repo
   cp repo/source/* .
 fi
 bash build.sh
 cd "$HOME"
-rm -rf "$WORK"
+rm -rf "$TMP"
